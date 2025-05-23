@@ -12,8 +12,8 @@ func main() {
 	r.Use(authHandlers.CORSMiddleware())
 
 	// Route for generating tokens
-	r.GET("/login", authHandlers.HandleLogin)
+	r.POST("/login", authHandlers.HandleLogin)
 	r.GET("/isAuthenticated", authHandlers.IsAuthenticated)
 
-	r.Run(":8080")
+	r.Run("localhost:8080")
 }

@@ -8,7 +8,6 @@ import (
 )
 
 func HandleLogin(c *gin.Context) {
-	fmt.Println("Login handler called")
 	c.SetCookie("refreshTokenString", "sample_refresh_token", 3600, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
