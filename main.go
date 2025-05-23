@@ -13,7 +13,7 @@ func main() {
 
 	// Route for generating tokens
 	r.POST("/login", authHandlers.HandleLogin)
-	r.GET("/isAuthenticated", authHandlers.IsAuthenticated)
+	r.POST("/refresh", authHandlers.HandleRefresh)
 
 	r.Run("localhost:8080")
 }
