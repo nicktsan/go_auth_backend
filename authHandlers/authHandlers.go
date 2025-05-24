@@ -1,8 +1,10 @@
 package authHandlers
 
 import (
+	"math/rand/v2"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +16,7 @@ func HandleLogin(c *gin.Context) {
 	c.SetCookie("refresh_token", "sample_refresh_token", 3600, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
-		"access_token": "sample_access_token",
+		"access_token": "sample_access_token_from_login",
 	})
 }
 
@@ -54,8 +56,10 @@ func HandleRefresh(c *gin.Context) {
 	// Here you would typically validate the refresh token and issue a new access token
 	if len(matches) > 0 {
 		c.SetCookie("refresh_token", "sample_refresh_token_2", 3600, "/", "localhost", false, true)
+		randomInt := rand.IntN(100)
+		accessToken := "sample_access_token_from_refresh" + strconv.Itoa(randomInt)
 		c.JSON(http.StatusOK, gin.H{
-			"access_token": "sample_access_token",
+			"access_token": accessToken,
 		})
 	} else {
 		c.String(http.StatusUnauthorized, "Invalid refresh token")
