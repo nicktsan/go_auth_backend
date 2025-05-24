@@ -9,10 +9,21 @@ import (
 )
 
 func HandleLogin(c *gin.Context) {
+	//Pretend to validate user credentials
+	// In a real application, you would validate the user credentials here
 	c.SetCookie("refresh_token", "sample_refresh_token", 3600, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
 		"access_token": "sample_access_token",
+	})
+}
+
+func HandleLogout(c *gin.Context) {
+	// Invalidate the refresh token by setting it to an empty value
+	// In a real application, you would also invalidate the token in your database or cache
+	c.SetCookie("refresh_token", "", -1, "/", "localhost", false, true)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Logged out successfully",
 	})
 }
 
