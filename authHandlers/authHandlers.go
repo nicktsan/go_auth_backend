@@ -19,12 +19,26 @@ func HandleLogin(c *gin.Context) {
 }
 
 func HandleLogout(c *gin.Context) {
+	cookie, err := c.Cookie("refresh_token")
+	if err != nil {
+		c.String(http.StatusUnauthorized, "Refresh token not found.")
+		return
+	}
+	values := []string{"sample_refresh_token", "sample_refresh_token_2"}
+	pattern := strings.Join(values, "|")
+	regex := regexp.MustCompile(pattern)
+	matches := regex.FindAllString(cookie, -1)
 	// Invalidate the refresh token by setting it to an empty value
 	// In a real application, you would also invalidate the token in your database or cache
-	c.SetCookie("refresh_token", "", -1, "/", "localhost", false, true)
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Logged out successfully",
-	})
+	if len(matches) > 0 {
+		c.SetCookie("refresh_token", "", -1, "/", "localhost", false, true)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Logged out successfully",
+		})
+	} else {
+		c.String(http.StatusUnauthorized, "Invalid refresh token.")
+	}
+
 }
 
 func HandleRefresh(c *gin.Context) {
